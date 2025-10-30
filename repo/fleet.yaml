@@ -1,0 +1,41 @@
+# fleet.yaml
+defaultNamespace: external-secrets
+
+namespace: external-secrets
+
+namespaceLabels:
+  okbtsp.corp/department: OIT
+  okbtsp.corp/owner: baranav
+  okbtsp.corp/project: external-secrets
+
+helm:
+  chart: external-secrets
+  repo: https://charts.external-secrets.io
+  version: "v0.20.4"
+
+# Кастомизация под кластеры
+targetCustomizations:
+  - name: all
+    clusterSelector: {}
+    helm:
+      values:
+        installCRDs: true
+
+  # === DEV ===
+  - name: management
+    clusterSelector:
+      matchLabels:
+        okbtsp.corp/template: rancher-k3s
+    helm:
+      values:
+        emptyvalue: value
+
+  # === PROD ===
+  - name: prod
+    clusterSelector:
+      matchLabels:
+        okbtsp.corp/template: talos-vmware
+    helm:
+      values:
+        global:
+          emptyvalue: value

@@ -1,0 +1,23 @@
+kind: GitRepo
+apiVersion: fleet.cattle.io/v1alpha1
+metadata:
+  name: manifests
+  namespace: fleet-default
+spec:
+  repo: https://github.com/rancher/fleet-examples
+  paths:
+    - repo
+  targets:
+    - name: management
+      clusterSelector:
+        matchLabels:
+          okbtsp.corp/department: OIT
+          okbtsp.corp/owner: baranav
+          okbtsp.corp/template: rancher-k3s
+
+    - name: prod
+      clusterSelector:
+        matchLabels:
+          okbtsp.corp/department: OIT
+          okbtsp.corp/owner: baranav
+          okbtsp.corp/template: talos-vmware
