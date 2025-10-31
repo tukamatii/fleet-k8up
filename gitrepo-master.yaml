@@ -4,8 +4,8 @@ metadata:
   labels:
     okbtsp.corp/department: OIT
     okbtsp.corp/owner: baranav
-    okbtsp.corp/project: CHANGEME
-  name: CHANGEME
+    okbtsp.corp/project: PROJECT_NAME
+  name: PROJECT_NAME
   namespace: fleet-default
 spec:
   branch: master
@@ -14,11 +14,12 @@ spec:
   clientSecretName: auth-57vqc
   correctDrift:
     enabled: true
+    force: true
   forceSyncGeneration: 2
   paths:
-    - manifests-to-apply
+    - manifests
   pollingInterval: 1m0s
-  repo: CHANGEME
+  repo: GIT_URL
   targets:
     - name: management
       clusterSelector:

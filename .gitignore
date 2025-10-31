@@ -7,3 +7,5 @@
 *.code-workspace
 
 gl-secret-detection-report.json
+
+*.sec

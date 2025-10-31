@@ -1,25 +1,26 @@
 # fleet.yaml
-defaultNamespace: projectname
+defaultNamespace: PROJECT
 
 namespaceLabels:
   okbtsp.corp/department: OIT
   okbtsp.corp/owner: baranav
-  okbtsp.corp/project: projectname
+  okbtsp.corp/project: PROJECT
+
+name: PROJECT
 
 helm:
-  chart: CHANGEME
-  repo: CHANGEME
-  version: CHANGEME
+  chart: CHART_NAME
+  repo: CHART_URL
+  version: CHART_VER
+  values:
+    custom_value: value
+
+kustomize:
+  dir: overlays/common
 
 # Кастомизация под кластеры
 targetCustomizations:
-  - name: all
-    clusterSelector: {}
-    helm:
-      values:
-        emptyvalue: value
-
-  # === DEV ===
+  # === MANAGEMENT ===
   - name: management
     clusterSelector:
       matchLabels:
@@ -36,3 +37,12 @@ targetCustomizations:
     helm:
       values:
         emptyvalue: value
+
+diff:
+  comparePatches:
+    - apiVersion: v1
+      kind: Secret
+      name: NAME
+      namespace: NAMESPACE
+      operations:
+        - { "op": "remove", "path": "/data" }
