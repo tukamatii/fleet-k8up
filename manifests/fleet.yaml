@@ -1,22 +1,22 @@
 # fleet.yaml
-defaultNamespace: PROJECT
+defaultNamespace: k8up-backups
 
 namespaceLabels:
   okbtsp.corp/department: OIT
   okbtsp.corp/owner: baranav
-  okbtsp.corp/project: PROJECT
+  okbtsp.corp/project: k8up-backups
 
-name: PROJECT
+name: k8up-backups
 
 helm:
-  chart: CHART_NAME
-  repo: CHART_URL
-  version: CHART_VER
+  chart: k8up
+  repo: https://k8up-io.github.io/k8up
+  version: 4.8.6
   values:
-    custom_value: value
+    timezone: "Europe/Moscow"
 
-kustomize:
-  dir: overlays/common
+# kustomize:
+#   dir: overlays/common
 
 # Кастомизация под кластеры
 targetCustomizations:
@@ -36,13 +36,28 @@ targetCustomizations:
         okbtsp.corp/template: talos-vmware
     helm:
       values:
-        emptyvalue: value
-
-diff:
-  comparePatches:
-    - apiVersion: v1
-      kind: Secret
-      name: NAME
-      namespace: NAMESPACE
-      operations:
-        - { "op": "remove", "path": "/data" }
+        replicaCount: 3
+        tolerations:
+          - key: "node-role.kubernetes.io/infra"
+            operator: "Equal"
+            value: ""
+            effect: "NoSchedule"
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: node-role.kubernetes.io/infra
+                      operator: In
+                      values: [""]
+#
+# diff:
+#
+# diff:
+#   comparePatches:
+#     - apiVersion: v1
+#       kind: Secret
+#       name: NAME
+#       namespace: NAMESPACE
+#       operations:
+#         - { "op": "remove", "path": "/data" }
