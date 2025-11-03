@@ -4,8 +4,8 @@ metadata:
   labels:
     okbtsp.corp/department: OIT
     okbtsp.corp/owner: baranav
-    okbtsp.corp/project: PROJECT_NAME
-  name: PROJECT_NAME
+    okbtsp.corp/project: k8up-backups
+  name: k8up-backups
   namespace: fleet-default
 spec:
   branch: master
@@ -19,7 +19,7 @@ spec:
   paths:
     - manifests
   pollingInterval: 1m0s
-  repo: GIT_URL
+  repo: ssh://git@gitlab.okbtsp.corp:2222/oit/k8s/fleet-k8up.git
   targets:
     - name: management
       clusterSelector:
