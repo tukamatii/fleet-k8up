@@ -1,0 +1,63 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: test
+
+---
+# statefulset-csi-test.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: test
+  name: csi-test
+  labels:
+    app: csi-test
+spec:
+  serviceName: "csi-test-headless" # требуется headless-сервис (может быть пустым)
+  replicas: 3
+  selector:
+    matchLabels:
+      app: csi-test
+  template:
+    metadata:
+      labels:
+        app: csi-test
+    spec:
+      containers:
+        - name: test-container
+          image: busybox
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              echo "Hello from pod $(HOSTNAME)!" > /data/message.txt
+              echo "PVC is mounted at /data" >> /data/message.txt
+              tail -f /data/message.txt
+          volumeMounts:
+            - name: data # ← ссылается на volumeClaimTemplates
+              mountPath: /data
+  volumeClaimTemplates: # ← ключевая часть!
+    - metadata:
+        name: data
+        annotations:
+          k8up.io/backup: "true"
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: vsphere-csi # ← ваш StorageClass
+        resources:
+          requests:
+            storage: 2Gi
+---
+# headless-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: test
+  name: csi-test-headless
+spec:
+  clusterIP: None # ← это делает сервис "headless"
+  selector:
+    app: csi-test
+  ports:
+    - name: dummy
+      port: 80

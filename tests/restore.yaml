@@ -1,0 +1,224 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: test
+  name: backup-credentials
+type: Opaque
+stringData:
+  username: test
+  password: test1234
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: test
+  name: backup-repo
+type: Opaque
+stringData:
+  password: asdf123124
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: test
+  name: ca-tls
+type: Opaque
+stringData:
+  ca.crt: |
+    -----BEGIN CERTIFICATE-----
+    MIIFmjCCBIKgAwIBAgITYQAAAAUOw3naxQsWhQAAAAAABTANBgkqhkiG9w0BAQsF
+    ADA6MTgwNgYDVQQDEy9JbmZyYS5jb3JwIENsYXNzIDEgUm9vdCBDZXJ0aWZpY2F0
+    aW9uIEF1dGhvcml0eTAeFw0yNTAzMzExNDMyMDhaFw0zMDAzMzExNDQyMDhaMIGM
+    MQswCQYDVQQGEwJCWTETMBEGA1UECBMKQmVsYXJ1c2lhbjEOMAwGA1UEBxMFTWlu
+    c2sxDjAMBgNVBAoTBUlORlJBMQwwCgYDVQQLEwNPSVQxGzAZBgNVBAMTEks4c0NB
+    Lm9rYnRzcC5sb2NhbDEdMBsGCSqGSIb3DQEJARYOb2l0QG9rYnRzcC5jb20wggEi
+    MA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDqUKASW9khaqt2CfdKzr1EZ4Mf
+    cnSKUmpU57Nh/vaMYg9m0rj/k2OPRL96GzqrcNEq/CqwKmlN5HXVBwPU8D7xq2Mv
+    +iswjFn3fB9rT4hDf0XmCaFGD4WiWLV1MLC/BvedeL3lONoWe9bPEJuj0RK/LnWA
+    4nUl24B0aUfi96VYXQH+lu/ic61TbjZJ4RlhEvVoOBgfrfwJ2+1cnoFfq9C5dN81
+    8LmQvAjN7MFKefPOEwaF3aqDbcBU+rP7WHlv/8hQs7l18/sCU6ISJ6dAd1itaByK
+    hsU6Kp3eM/9GbFsZA7nHXxe+YVlHnsccflImMmedPDeOJsbc/LEE35PglROVAgMB
+    AAGjggJEMIICQDAdBgNVHQ4EFgQUvVX8IDAHRzBXVSP5elBI1Fr8UwUwHwYDVR0j
+    BBgwFoAUn9vO2Z00whB7tjFUQFDAKHkJyk0wgdIGA1UdHwSByjCBxzCBxKCBwaCB
+    voZeaHR0cDovL3BraS5va2J0c3AubG9jYWwvQ2VydERhdGEvSW5mcmEuY29ycCUy
+    MENsYXNzJTIwMSUyMFJvb3QlMjBDZXJ0aWZpY2F0aW9uJTIwQXV0aG9yaXR5LmNy
+    bIZcaHR0cDovL3BraS5pbmZyYS5jb3JwL0NlcnREYXRhL0luZnJhLmNvcnAlMjBD
+    bGFzcyUyMDElMjBSb290JTIwQ2VydGlmaWNhdGlvbiUyMEF1dGhvcml0eS5jcmww
+    ge8GCCsGAQUFBwEBBIHiMIHfMHQGCCsGAQUFBzAChmhodHRwOi8vcGtpLm9rYnRz
+    cC5sb2NhbC9DZXJ0RGF0YS9Sb290Q0EtMDFfSW5mcmEuY29ycCUyMENsYXNzJTIw
+    MSUyMFJvb3QlMjBDZXJ0aWZpY2F0aW9uJTIwQXV0aG9yaXR5LmNydDBnBggrBgEF
+    BQcwAoZbaHR0cDovcGtpLmluZnJhLmNvcnAvQ2VydERhdGEvUm9vdENBLTAxX0lu
+    ZnJhLmNvcnAgQ2xhc3MgMSBSb290IENlcnRpZmljYXRpb24gQXV0aG9yaXR5LmNy
+    dDAZBgkrBgEEAYI3FAIEDB4KAFMAdQBiAEMAQTAPBgNVHRMBAf8EBTADAQH/MAsG
+    A1UdDwQEAwIBhjANBgkqhkiG9w0BAQsFAAOCAQEAZLMaHDm2njW3I+eWX8glirtr
+    BwdNay4ryraMA7WpznuWQbpTzefVgCPL3hcF4nZfGJ3s/dyTfNfeYkoA83atzuzG
+    axTanxe405AvnJ5k8ZnAuNNk5LcnAjCRMktPpm23rON0AteGsp0z/sb5mt/B/W8O
+    SEwTqMeqtNGK4ERwqWYaiX8nVNL5VfhCxKjl8i0izM5wG9VfpGEv8tJw43o6dxyc
+    UkZNj82JOtWfsXtupxOB24Of1ZZ4FrAeD0Z+yy0glzvEIJkkrBv2UKdC/F1qg8BN
+    YCkBiizmWNQifrLOph6GDIR0qIYwdSSfFnzrVrCyf93FkF3Hz3RPJmduqQN3Hw==
+    -----END CERTIFICATE-----
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: restore
+  # Optional:
+  namespace: test
+  #namespace: snapshot-test
+  annotations:
+    # set to "true" to include in future backups
+    k8up.io/backup: "false"
+  # Optional:
+spec:
+  # Optional:
+  storageClassName: vsphere-csi # ← ваш StorageClass
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      # Must be sufficient to hold your data
+      storage: 250Mi
+---
+# restore-0.yaml
+apiVersion: k8up.io/v1
+kind: Restore
+metadata:
+  namespace: test
+  name: restore-csi-test-0
+spec:
+  restoreMethod:
+    folder:
+      claimName: data-csi-test-0 # ← именно этот PVC
+  backend:
+    repoPasswordSecretRef:
+      name: backup-repo
+      key: password
+    s3:
+      endpoint: https://minio.okbtsp.corp/test/ssdfdsf
+      accessKeyIDSecretRef:
+        name: backup-credentials
+        key: username
+      secretAccessKeySecretRef:
+        name: backup-credentials
+        key: password
+    tlsOptions:
+      caCert: /mnt/ca/ca.crt
+    volumeMounts:
+      - name: ca-tls
+        mountPath: /mnt/ca/
+  podSecurityContext:
+    runAsUser: 0
+    runAsGroup: 0
+    fsGroup: 0
+    runAsNonRoot: false
+    fsGroupChangePolicy: "OnRootMismatch"
+    supplementalGroups: [0]
+  volumes:
+    - name: ca-tls
+      secret:
+        secretName: ca-tls
+        defaultMode: 420
+
+---
+# restore-0.yaml
+apiVersion: k8up.io/v1
+kind: Restore
+metadata:
+  namespace: test
+  name: restore-csi-test-1
+spec:
+  restoreMethod:
+    folder:
+      claimName: data-csi-test-1 # ← именно этот PVC
+  backend:
+    repoPasswordSecretRef:
+      name: backup-repo
+      key: password
+    s3:
+      endpoint: https://minio.okbtsp.corp/test/ssdfdsf
+      accessKeyIDSecretRef:
+        name: backup-credentials
+        key: username
+      secretAccessKeySecretRef:
+        name: backup-credentials
+        key: password
+    tlsOptions:
+      caCert: /mnt/ca/ca.crt
+    volumeMounts:
+      - name: ca-tls
+        mountPath: /mnt/ca/
+  podSecurityContext:
+    runAsUser: 0
+    runAsGroup: 0
+    fsGroup: 0
+    runAsNonRoot: false
+    fsGroupChangePolicy: "OnRootMismatch"
+    supplementalGroups: [0]
+  volumes:
+    - name: ca-tls
+      secret:
+        secretName: ca-tls
+        defaultMode: 420
+
+---
+# restore-0.yaml
+apiVersion: k8up.io/v1
+kind: Restore
+metadata:
+  namespace: test
+  name: restore-csi-test-2
+spec:
+  restoreMethod:
+    folder:
+      claimName: data-csi-test-2 # ← именно этот PVC
+  backend:
+    repoPasswordSecretRef:
+      name: backup-repo
+      key: password
+    s3:
+      endpoint: https://minio.okbtsp.corp/test/ssdfdsf
+      accessKeyIDSecretRef:
+        name: backup-credentials
+        key: username
+      secretAccessKeySecretRef:
+        name: backup-credentials
+        key: password
+    tlsOptions:
+      caCert: /mnt/ca/ca.crt
+    volumeMounts:
+      - name: ca-tls
+        mountPath: /mnt/ca/
+  podSecurityContext:
+    runAsUser: 0
+    runAsGroup: 0
+    fsGroup: 0
+    runAsNonRoot: false
+    fsGroupChangePolicy: "OnRootMismatch"
+    supplementalGroups: [0]
+  volumes:
+    - name: ca-tls
+      secret:
+        secretName: ca-tls
+        defaultMode: 420
+
+---
+# debug.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: test
+  name: debug-restore
+spec:
+  containers:
+    - name: debug
+      image: alpine
+      command: ["sleep", "3600"]
+      volumeMounts:
+        - name: data
+          mountPath: /data
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: restore
+  restartPolicy: Never
