@@ -14,9 +14,6 @@ helm:
   version: 4.8.6
   values:
     timezone: "Europe/Moscow"
-#
-# kustomize:
-#   dir: overlays/common
 
 # Кастомизация под кластеры
 targetCustomizations:
