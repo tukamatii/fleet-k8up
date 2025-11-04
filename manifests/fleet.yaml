@@ -15,9 +15,6 @@ helm:
   values:
     custom_value: value
 
-kustomize:
-  dir: overlays/common
-
 # Кастомизация под кластеры
 targetCustomizations:
   # === MANAGEMENT ===
